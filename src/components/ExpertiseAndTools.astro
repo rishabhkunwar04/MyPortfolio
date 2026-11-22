@@ -1,0 +1,120 @@
+---
+const expertise = [
+  {
+    title: 'Backend engineering',
+    copy: 'At American Express, I maintained eight services that manage benefit enrollment, rewards, and partner integrations.',
+    accent: '#ffc49f',
+  },
+  {
+    title: 'Distributed systems',
+    copy: 'I built routing rules for a rewards platform processing 10 million events a day, so each of its 22 markets could handle events according to local requirements.',
+    accent: '#8fd7c6',
+  },
+  {
+    title: 'AI agents & skills',
+    copy: 'I build AI agents and reusable skills for recurring engineering tasks. One tool I developed finds security issues in code and opens pull requests with proposed fixes.',
+    accent: '#eab3bc',
+  },
+  {
+    title: 'Search & deduplication',
+    copy: 'At Airtel, I built APIs that find duplicate addresses across more than 500 million customer records.',
+    accent: '#9ec8ee',
+  },
+];
+const rows = [
+  [
+    ['java','Java','Backend services'], ['go','Go','API development'],
+    ['python','Python','Automation'], ['spring','Spring Boot','Microservices'],
+    ['apachekafka','Kafka','Event streaming'], ['rabbitmq','RabbitMQ','Messaging'],
+  ],
+  [
+    ['postgresql','PostgreSQL','Relational data'], ['redis','Redis','Caching'],
+    ['mongodb','MongoDB','Document storage'], ['docker','Docker','Containers'],
+    ['kubernetes','Kubernetes','Orchestration'], ['git','Git','Version control'],
+  ],
+];
+---
+<section class="expertise" id="expertise" aria-labelledby="expertise-title">
+  <div class="wrap">
+    <h2 id="expertise-title">My expertise<span>.</span></h2>
+    <div class="expertise-grid">
+      {expertise.map((item,i) => (
+        <article class="skill" style={`--accent:${item.accent};--delay:${i % 2 * 75}ms`}>
+          <h3>{item.title}</h3>
+          <p>{item.copy}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+<section class="tools" id="tools" aria-labelledby="tools-title">
+  <div class="wrap">
+    <header><h2 id="tools-title">My toolbelt<span>.</span></h2>
+      <button class="belt-toggle" type="button" hidden>Pause scrolling</button>
+    </header>
+    <div class="lanes">
+      {rows.map(row => (
+        <div class="lane"><div class="track">
+          {[false, true].map(duplicate => (
+            <ul aria-hidden={duplicate ? 'true' : undefined}>
+              {row.map(([icon,name,use]) => (
+                <li><img src={`/tool-icons/${icon}.svg`} alt="" width="28" height="28" loading="lazy" />
+                  <div><strong>{name}</strong><small>{use}</small></div>
+                </li>
+              ))}
+            </ul>
+          ))}
+        </div></div>
+      ))}
+    </div>
+  </div>
+</section>
+<script>
+  const tools = document.querySelector<HTMLElement>('.tools');
+  const button = tools?.querySelector<HTMLButtonElement>('.belt-toggle');
+  if (tools && button) {
+    tools.dataset.animated = 'true';
+    button.hidden = false;
+    button.addEventListener('click', () => {
+      const running = tools.dataset.animated === 'true';
+      tools.dataset.animated = String(!running);
+      button.textContent = running ? 'Resume scrolling' : 'Pause scrolling';
+    });
+  }
+</script>
+<style>
+  .expertise, .tools { color: #f9f5ec; background: #141c1c; }
+  .expertise { padding: clamp(48px,7vw,96px) 0 0; }
+  .tools { padding: clamp(44px,6vw,80px) 0; }
+  h2 { margin: 0 0 28px; }
+  h2 span { color: #ffc49f; }
+  .expertise h2 { text-align: center; margin-bottom: clamp(28px,4vw,54px); }
+  .expertise-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1px; border: 1px solid #384442; background: #384442; }
+  .skill { background: #141c1c; padding: clamp(25px,4vw,52px); }
+  .skill h3 { margin: 0 0 20px; font: 600 clamp(1.5rem,2.7vw,2.45rem)/1.16 var(--heading); letter-spacing: -.045em; }
+  .skill h3::after { content: ''; display: block; width: 2rem; height: 3px; margin-top: 12px; background: var(--accent); }
+  .skill p { margin: 0; max-width: 49ch; font-size: 1.06rem; line-height: 1.65; color: #d0d6ce; }
+  .tools header { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 25px; }
+  .tools header h2 { margin: 0; }
+  .belt-toggle { padding: 9px 16px; min-height: 44px; border-radius: 24px; border: 1px solid #75837a; background: transparent; color: inherit; cursor: pointer; font: inherit; font-size: .94rem; font-weight: 550; }
+  .belt-toggle:hover, .belt-toggle:focus-visible { border-color: #ffc49f; color: #ffc49f; }
+  .lanes { display: grid; gap: 12px; }
+  .track ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+  .track ul[aria-hidden="true"] { display: none; }
+  .track li { display: flex; align-items: center; gap: 12px; background: #202c29; border: 1px solid #3c4a45; border-radius: 12px; padding: 12px 16px; }
+  .track img { box-sizing: content-box; padding: 7px; border-radius: 9px; background: #e1e9e3; }
+  .track strong, .track small { display: block; }
+  .track small { color: #b8c9bf; font-size: .875rem; }
+  @media (prefers-reduced-motion: no-preference) {
+    .skill.reveal { animation-delay: var(--delay); }
+    [data-animated="true"] .lane { overflow: hidden; mask-image: linear-gradient(to right,transparent,#000 3%,#000 97%,transparent); }
+    [data-animated="true"] .track { display: flex; width: max-content; animation: belt 38s linear infinite; }
+    [data-animated="true"] .lane:nth-child(2) .track { animation-direction: reverse; animation-duration: 43s; }
+    [data-animated="true"] .track ul { display: flex; flex-wrap: nowrap; padding-right: 10px; }
+    [data-animated="true"] .track li { min-width: 206px; }
+    @media (hover: hover) { [data-animated="true"] .lanes:hover .track { animation-play-state: paused; } }
+    @keyframes belt { to { transform: translateX(-50%); } }
+  }
+  @media (prefers-reduced-motion: reduce) { .belt-toggle { display: none; } }
+  @media (max-width: 650px) { .expertise-grid { grid-template-columns: 1fr; } }
+</style>

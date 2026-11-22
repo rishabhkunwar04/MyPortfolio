@@ -1,0 +1,23 @@
+---
+import Site from '../../layouts/Site.astro';
+import { projects } from '../../data/projects';
+import '../../work.css';
+---
+<Site title="Work — Rishabh Raj" description="Selected engineering projects by Rishabh Raj at American Express and Airtel.">
+  <main id="main" class="wrap work-page">
+    <header class="work-heading intro">
+      <h1>Selected work<span>.</span></h1>
+      <p class="bio">Backend systems I’ve worked on at American Express and Airtel, from routing reward events to finding similar customer records.</p>
+    </header>
+    <div class="project-cards">
+      {projects.map(project => (
+        <article class="work-card">
+          <a href={`/work/${project.slug}/`}>
+            <div class="metric-panel"><span>{project.area}</span><strong>{project.metric}</strong><span>{project.unit}</span></div>
+            <div class="card-copy"><p class="company">{project.company}</p><h2>{project.title}</h2><p>{project.summary}</p></div>
+          </a>
+        </article>
+      ))}
+    </div>
+  </main>
+</Site>

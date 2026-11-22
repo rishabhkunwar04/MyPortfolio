@@ -1,0 +1,27 @@
+---
+import Site from '../../layouts/Site.astro';
+import { projects } from '../../data/projects';
+import '../../work.css';
+export function getStaticPaths() {
+  return projects.map(project => ({ params: { slug: project.slug }, props: { project } }));
+}
+const { project } = Astro.props;
+---
+<Site title={`${project.title} — Rishabh Raj`} description={project.summary}>
+  <main id="main" class="wrap story-page">
+    <a class="back-link" href="/work/">All projects</a>
+    <header class="story-title intro">
+      <p class="label"><span class="dash"></span>{project.company} · {project.area}</p>
+      <h1>{project.title}<span>.</span></h1>
+      <p class="bio">{project.summary}</p>
+    </header>
+    {[
+      ['The problem', project.problem],
+      ['My contribution', project.contribution],
+      ['Technical approach', project.decision],
+      ['Outcome', project.outcome],
+    ].map(([title, copy]) => (
+      <section class="story-row"><h2>{title}</h2><p>{copy}</p></section>
+    ))}
+  </main>
+</Site>

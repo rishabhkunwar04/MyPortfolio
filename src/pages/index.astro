@@ -1,0 +1,72 @@
+---
+import Site from '../layouts/Site.astro';
+import ExpertiseAndTools from '../components/ExpertiseAndTools.astro';
+---
+<Site title="Rishabh Raj — Software Engineer" description="Rishabh Raj is a senior software engineer working on backend platforms, distributed systems, and event processing at American Express.">
+    <main id="main">
+      <section class="hero" aria-labelledby="intro">
+        <div class="surface" aria-hidden="true">
+          <img src="/routing-globe.webp" width="1440" height="960" alt="" />
+          <canvas hidden></canvas>
+        </div>
+        <div class="intro">
+          <h1 id="intro">Rishabh Raj<span>.</span></h1>
+          <p class="role">Senior Software Engineer · Backend &amp; Distributed Systems</p>
+          <div class="employers">
+            <p>Experience at</p>
+            <ul>
+              {[
+                { logo: 'americanexpress', name: 'American Express', dates: 'Nov 2025 – present' },
+                { logo: 'airtel', name: 'Airtel', dates: 'Sep 2022 – Nov 2025' },
+              ].map(({ logo, name, dates }) => (
+                <li class="employer">
+                  <button type="button" aria-label={name} aria-describedby={logo + '-dates'}>
+                    <img src={'/employers/' + logo + '.svg'} alt="" width="34" height="34" />
+                    {logo === 'airtel' && <b>airtel</b>}
+                  </button>
+                  <span role="tooltip" id={logo + '-dates'}>{dates}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <a class="button" href="/work/">Explore my work</a>
+        </div>
+        <div class="hero-foot wrap">
+            <button class="motion-toggle" type="button" aria-label="Pause artwork animation" hidden>
+              <span aria-hidden="true">Ⅱ</span>
+            </button>
+        </div>
+      </section>
+      <ExpertiseAndTools />
+      <section class="contact" id="contact" aria-labelledby="contact-title">
+        <div class="wrap">
+          <h2 id="contact-title">Get in touch<span>.</span></h2>
+          <div class="contact-panel">
+            <h3>Let’s build something<br /><em>impactful.</em></h3>
+            <p>Building a backend, distributed systems, or AI engineering team? I’ve built production systems that process millions of events a day. I’d love to talk about your team or trade ideas on system design, Kafka, cloud architecture, and AI-driven engineering.</p>
+            <div class="contact-actions">
+              <a href="mailto:rishabh.kunwar04@gmail.com">Email me</a>
+              <a href="https://www.linkedin.com/in/rishabh-raj-1551811ab/">LinkedIn</a>
+              <a href="tel:+917667729253">Call me</a>
+              <a href="/rishabh-raj-resume.pdf">View résumé</a>
+            </div>
+            <div class="contact-details">
+              <a href="mailto:rishabh.kunwar04@gmail.com">rishabh.kunwar04@gmail.com</a>
+              <a href="https://github.com/rishabhkunwar04">GitHub</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script>
+      import '../motion';
+      const logos = document.querySelectorAll<HTMLButtonElement>('.employer button');
+      for (const logo of logos) {
+        logo.addEventListener('click', () => logo.focus());
+      }
+      document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && document.activeElement instanceof HTMLElement &&
+            document.activeElement.matches('.employer button')) document.activeElement.blur();
+      });
+    </script>
+</Site>

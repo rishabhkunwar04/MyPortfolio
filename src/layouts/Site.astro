@@ -1,0 +1,32 @@
+---
+import '@fontsource-variable/dm-sans';
+import '@fontsource-variable/space-grotesk';
+import '../style.css';
+
+interface Props {
+  title: string;
+  description: string;
+}
+const { title, description } = Astro.props;
+const onHome = Astro.url.pathname === '/';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body id="top">
+    <a class="skip" href="#main">Skip to content</a>
+    <header class:list={['mast', { 'mast-dark': onHome }]}><div class="wrap nav">
+      <a class="brand" href={onHome ? '#top' : '/'} aria-label="Rishabh Raj, home"><span class="mark" aria-hidden="true">rr.</span> Rishabh Raj</a>
+      <nav aria-label="Main navigation">
+        <a href="/work/" aria-current={Astro.url.pathname.replace(/\/$/, '') === '/work' ? 'page' : undefined}>Work</a>
+        <a href={onHome ? '#contact' : '/#contact'}>Contact</a>
+      </nav>
+    </div></header>
+    <slot />
+  </body>
+</html>

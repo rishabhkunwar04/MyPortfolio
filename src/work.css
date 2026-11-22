@@ -1,0 +1,31 @@
+.work-page, .story-page { padding-block: clamp(36px, 6vw, 80px); }
+.work-heading { margin-bottom: clamp(28px, 4vw, 55px); }
+.work-heading h1, .story-title h1 { font-size: clamp(3.3rem, 7.4vw, 7rem); line-height: 1; margin: 0 0 .25em; }
+.work-heading .bio, .story-title .bio { max-width: 43rem; }
+.project-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 255px), 1fr)); gap: 24px; }
+.work-card a { display: block; height: 100%; color: inherit; text-decoration: none; }
+.work-card a:is(:hover,:focus-visible) h2 { text-decoration: underline; text-decoration-thickness: 2px; }
+.metric-panel { display: flex; flex-direction: column; justify-content: end; align-items: start; padding: 23px; aspect-ratio: 1.65; border-radius: 6px; background: radial-gradient(#ffffff18 .8px, transparent 1px) 0 0 / 10px 10px, #242d29; color: #f9f6ef; }
+.work-card:nth-child(2) .metric-panel { background-color: #794126; }
+.work-card:nth-child(3) .metric-panel { background-color: #324a5c; }
+.metric-panel span { font: 500 .9rem/1.4 ui-monospace, Menlo, monospace; }
+.metric-panel span:first-child { margin-bottom: auto; }
+.metric-panel strong { font: 550 clamp(3rem, 5.8vw, 5.3rem)/1 var(--heading); letter-spacing: -.075em; }
+.card-copy { padding: 18px 0 22px; border-bottom: 1px solid var(--line); }
+.card-copy h2, .story-row h2 { font-size: clamp(1.55rem, 2.4vw, 2.25rem); letter-spacing: -.045em; }
+.card-copy p:last-child, .story-row p { margin-top: 12px; color: var(--muted); line-height: 1.65; }
+.story-page { max-width: 920px; }
+.back-link { font-weight: 600; }
+.story-title { margin: 38px 0; }
+.story-title .label { margin-bottom: 18px; }
+.story-row { display: grid; grid-template-columns: 1fr 1.8fr; gap: 24px; border-top: 1px solid var(--line); padding: 24px 0; }
+.story-row p { margin: 0; font-size: 1.1rem; }
+nav a[aria-current="page"] { text-decoration: underline; text-decoration-color: var(--orange); text-underline-offset: .45em; }
+@media (max-width: 600px) {
+  .story-row { grid-template-columns: 1fr; gap: 8px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .work-card { animation: arrive 460ms ease-out both; }
+  .work-card:nth-child(2) { animation-delay: 65ms; }
+  .work-card:nth-child(3) { animation-delay: 130ms; }
+}
