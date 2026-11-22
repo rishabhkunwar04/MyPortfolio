@@ -1,0 +1,74 @@
+<section id="portrait" aria-label="Backend and AI engineering">
+  <div class="side backend">
+    <h2>backend</h2>
+    <p>I build the services that move events, match records, and keep data flowing.</p>
+    <a href="/work/">Explore my systems →</a>
+  </div>
+  <div class="photo">
+    <img src="/rishabh-portrait.webp" alt="Rishabh Raj" width="660" height="900" loading="lazy" />
+    <div class="overlay" aria-hidden="true"><code>{['task.read()', 'context.load()', 'agent.plan()', 'skills.run()', 'review(result)'].map((line, i) => <span style={`--delay:${i * 85 + 200}ms`}>{line}</span>)}</code></div>
+  </div>
+  <div class="side ai">
+    <h2>&lt;ai builder&gt;</h2>
+    <p>I build agents and reusable skills that help engineers automate everyday tasks.</p>
+    <a href="#ai-skills">Explore my AI work →</a>
+  </div>
+</section>
+<script>
+  const portrait = document.querySelector<HTMLElement>('#portrait');
+  const photo = portrait?.querySelector<HTMLElement>('.photo');
+  if (portrait && photo) {
+    const pointerMotion = matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
+    photo.addEventListener('pointermove', event => {
+      if (!pointerMotion.matches) return;
+      const bounds = photo.getBoundingClientRect();
+      const position = Math.max(0, Math.min(1, (event.clientX - bounds.left) / bounds.width));
+      photo.style.setProperty('--split', (25 + position * 50) + '%');
+    });
+    photo.addEventListener('pointerleave', () => photo.style.removeProperty('--split'));
+    const observer = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) {
+        portrait.classList.add('entered');
+        observer.disconnect();
+      }
+    }, { threshold: 0.15 });
+    observer.observe(portrait);
+  }
+</script>
+<style>
+  section { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,30%) minmax(0,1fr); background:linear-gradient(90deg,#141418 50%,#161121 50%); color:#faf8fc; border-block:1px solid #333039; }
+  .side { align-self:center; padding:clamp(20px,4vw,70px); }
+  .backend { text-align:right; }
+  h2 { font:700 clamp(2.4rem,5vw,6rem)/1 var(--heading); letter-spacing:-.065em; margin:0; }
+  .ai h2 { color:#ba9aff; font:550 clamp(2rem,4vw,5rem)/1.04 ui-monospace,monospace; letter-spacing:-.07em; }
+  p { color:#cdc8d4; margin:22px 0; max-width:32ch; line-height:1.6; }
+  .backend p { margin-left:auto; }
+  a { display:inline-block; padding:6px 0; color:inherit; font:.9rem/1.5 ui-monospace,monospace; text-underline-offset:6px; }
+  .photo { position:relative; overflow:hidden; align-self:stretch; min-height:350px; aspect-ratio:660/900; }
+  img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 35%; }
+  .overlay { position:absolute; inset:0 0 0 50%; background:linear-gradient(155deg,#7136d99c,#24225869); border-left:1px solid #dfcbfc8c; }
+  code { position:absolute; bottom:7%; left:8%; color:#fff; text-shadow:0 1px 3px #30203c; font:500 clamp(.65rem,1vw,.9rem)/1.8 ui-monospace,monospace; }
+  code span { display:block; white-space:nowrap; }
+  @media(prefers-reduced-motion:no-preference){
+    .overlay { left:var(--split,50%); transition:left .28s ease-out; }
+    .overlay::before { content:''; position:absolute; left:-1px; inset-block:0; width:2px; background:linear-gradient(transparent,#e5d4ff,transparent); box-shadow:0 0 12px #bc90ff; }
+    section:has(.backend:focus-within) { --split:68%; }
+    section:has(.ai:focus-within) { --split:32%; }
+    @media(hover:hover){
+      section:has(.backend:hover) { --split:68%; }
+      section:has(.ai:hover) { --split:32%; }
+    }
+    .entered .side { animation:portrait-arrive .65s ease-out both; }
+    .entered code span { animation:portrait-arrive .42s var(--delay) ease-out both; }
+    .entered .overlay { animation:portrait-sweep .85s cubic-bezier(.2,.75,.25,1); }
+    @keyframes portrait-sweep { from { left:95%; } }
+    @keyframes portrait-arrive { from { opacity:0; transform:translateY(10px); } }
+  }
+  @media(max-width:700px){
+    section { grid-template-columns:1fr 1fr; }
+    .photo { grid-column:1/-1; grid-row:1; width:min(100%,420px); min-height:0; max-height:400px; justify-self:center; }
+    .side { align-self:start; padding:24px 14px; }
+    h2 { font-size:clamp(1.85rem,7vw,3rem); }.ai h2 { font-size:clamp(1.45rem,5.5vw,2.5rem); }
+    p { margin:12px 0; }.side a{font-size:.8rem}
+  }
+</style>

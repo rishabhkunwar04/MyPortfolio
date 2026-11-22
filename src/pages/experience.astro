@@ -1,0 +1,104 @@
+---
+import Site from '../layouts/Site.astro';
+import { projects } from '../data/projects';
+const roles = [
+  {
+    title: 'Senior Software Engineer', company: 'American Express', logo: 'americanexpress',
+    dates: 'Nov 2025 – Present', city: 'Bengaluru, Karnataka', domain: 'americanexpress.com',
+    summary: 'I work on the Global Benefits & Rewards platform and build AI tools for engineering teams.',
+    highlights: [
+      'Maintained eight services for enrollment, cancellations, and reward qualification during platform migrations across 22 markets.',
+      'Implemented market-specific Kafka routing rules for a platform handling 10 million events a day.',
+      'Developed an AI security tool that analyzes code and prepares pull requests with proposed fixes.',
+    ],
+    tags: ['Java', 'Go', 'Kafka', 'gRPC', 'Kubernetes'], project: 'global-benefits-rewards',
+  },
+  {
+    title: 'Senior Software Engineer', company: 'Airtel', logo: 'airtel',
+    dates: 'Jun 2024 – Nov 2025', city: 'Pune, Maharashtra', domain: 'airtel.in',
+    summary: 'I built address-matching services for a fraud management platform covering more than 500 million customer records across India.',
+    highlights: [
+      'Combined five-character tokens with GIN indexes to find addresses written in slightly different ways.',
+      'Used Bloom filters to narrow candidate matches and distributed lookups across read replicas and parallel workers.',
+    ],
+    tags: ['GIN indexes', 'Bloom filters', 'Similarity search'], project: 'address-deduplication',
+  },
+  {
+    title: 'Software Engineer', company: 'Airtel', logo: 'airtel',
+    dates: 'Sep 2022 – Jun 2024', city: 'Pune, Maharashtra', domain: 'airtel.in',
+    summary: 'I built data pipelines and campaign APIs for Airtel’s consumer and business teams.',
+    highlights: [
+      'Engineered a Kafka pipeline that processed more than 15 million records daily across mobile, broadband, and television services.',
+      'Implemented WhatsApp and SMS retargeting APIs for customer acquisition campaigns that increased daily revenue by 25%.',
+    ],
+    tags: ['Kafka', 'ETL', 'Messaging APIs'], project: 'telecom-data-pipeline',
+  },
+];
+const metrics = [['8', 'rewards microservices'], ['22', 'international markets'], ['10M', 'reward events per day'], ['500M+', 'customer records searched']];
+---
+<Site title="Experience — Rishabh Raj" description="Engineering roles at American Express and Airtel, selected contributions, education, and recognition.">
+  <main id="main">
+    <div class="wrap">
+      <header class="introduction">
+        <h1>Professional<br/>Experience</h1>
+        <p>At American Express, I build systems for benefits and rewards. At Airtel, I worked on fraud detection and telecom data pipelines.</p>
+      </header>
+      <dl class="metrics">{metrics.map(([value,label]) => <div><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
+      <ol class="timeline" aria-label="Employment history">
+        {roles.map(role => <li>
+          <article>
+            <header class="role-header">
+              <h2>{role.title} <em>@ {role.company}</em></h2>
+              <span class="dates">{role.dates}</span>
+              <img class="logo" src={'/employers/' + role.logo + '.svg'} alt="" width="48" height="48"/>
+            </header>
+            <p class="meta">{role.city} · <a href={'https://www.'+role.domain}>{role.domain}</a></p>
+            <p>{role.summary}</p>
+            <ul class="highlights">{role.highlights.map(line => <li>{line}</li>)}</ul>
+            <ul class="tags" aria-label="Technologies and methods">{role.tags.map(tag => <li>{tag}</li>)}</ul>
+            <a class="case-link" href={'/work/'+role.project+'/'}>{projects.find(p => p.slug === role.project)?.title} case study →</a>
+          </article>
+        </li>)}
+      </ol>
+      <div class="credentials">
+        <section><h2>Education</h2><h3>Dr. A.P.J. Abdul Kalam Technical University</h3><p>B.Tech in Computer Science</p><small>2018–2022 · Uttar Pradesh</small></section>
+        <section><h2>Recognition</h2><ul><li><strong>Airtel Ace Award</strong> for outstanding quarterly performance.</li><li><strong>HackWithInfy</strong> — top 1% of 180,000 participants.</li><li><strong>International Mathematics Olympiad</strong> — first at district level.</li></ul></section>
+      </div>
+    </div>
+  </main>
+</Site>
+<style>
+  main { background:#101014; color:#f3f2f5; padding:clamp(40px,5vw,76px) 0 72px; }
+  .introduction { text-align:center; }
+  h1 { margin:0; font-size:clamp(3rem,6.8vw,6rem); line-height:.98; letter-spacing:-.06em; }
+  .introduction p,.meta,.dates,.tags,dt,small { font-family:ui-monospace,Menlo,monospace; }
+  .introduction p { max-width:64ch; margin:28px auto; color:#c2bdcf; line-height:1.75; }
+  .metrics { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; max-width:1020px; margin:48px auto; }
+  .metrics div,article,.credentials section { border:1px solid #34323e; background:#19181f; border-radius:14px; }
+  .metrics div { display:flex; flex-direction:column-reverse; justify-content:flex-end; padding:clamp(16px,2vw,30px); }
+  .metrics dd { font:700 clamp(2rem,4vw,3.5rem)/1.1 var(--heading); }
+  .metrics dt { font-size:.84rem; color:#bbb4c9; margin-top:8px; }
+  .timeline { list-style:none; margin:0; padding:0 0 0 25px; position:relative; }
+  .timeline::before { content:''; position:absolute; inset:0 auto 0 0; width:2px; background:linear-gradient(#a38afa,#ef91b3); }
+  .timeline > li { position:relative; margin:0 0 22px; }
+  .timeline > li::before { content:''; position:absolute; top:32px; left:-32px; width:12px; height:12px; border:2px solid #b59aff; border-radius:50%; background:#101014; }
+  article,.credentials section { padding:clamp(18px,3vw,38px); }
+  .role-header { display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+  .role-header h2 { flex:1 1 340px; font-size:clamp(1.35rem,2.4vw,2rem); line-height:1.16; letter-spacing:-.04em; }
+  em,.case-link { color:#c3acff; font-style:normal; }
+  .dates,.tags li { border:1px solid #423f4d; border-radius:6px; padding:5px 10px; background:#211f29; color:#dbd6e4; font-size:.8rem; }
+  .logo { padding:8px; border-radius:10px; background:#fff; }
+  article p,.highlights,.credentials p,.credentials ul { color:#cecbd5; line-height:1.65; }
+  .meta { font-size:.85rem; margin:12px 0 18px; }
+  .highlights,.credentials ul { padding-left:20px; }
+  .highlights li + li,.credentials li + li { margin-top:7px; }
+  li::marker { color:#b59aff; }
+  .tags { display:flex; flex-wrap:wrap; gap:6px; padding:0; list-style:none; }
+  .case-link { display:inline-block; margin-top:6px; }
+  .credentials { display:grid; grid-template-columns:1fr 1.4fr; gap:16px; margin-top:34px; }
+  .credentials h2 { font:600 .86rem ui-monospace,monospace; color:#c3acff; letter-spacing:.09em; text-transform:uppercase; }
+  .credentials h3 { margin:16px 0 5px; }
+  .credentials small { color:#bbb4c9; }
+  @media(max-width:650px){ .metrics { grid-template-columns:1fr 1fr; } .credentials { grid-template-columns:1fr; } .role-header h2 { flex-basis:100%; } .logo { order:-1; } }
+  @media(prefers-reduced-motion:no-preference){ .introduction { animation:enter .45s ease-out; } @supports(animation-timeline:view()){ article { animation:enter linear both; animation-timeline:view(); animation-range:entry 0% entry 65%; } } @keyframes enter { from { opacity:.35; transform:translateY(12px); } } }
+</style>

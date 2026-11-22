@@ -1,4 +1,4 @@
-import { drawGlobe } from './globe';
+import { drawSignalRibbon } from './signalRibbon';
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -33,7 +33,7 @@ function animateSurface(canvas: HTMLCanvasElement, toggle: HTMLButtonElement) {
       canvas.height = pixelHeight;
     }
     context!.setTransform(density, 0, 0, density, 0, 0);
-    drawGlobe(context!, width, height, elapsed, tiltX, tiltY);
+    drawSignalRibbon(context!, width, height, elapsed, tiltX, tiltY);
   }
 
   function tick(time: number) {
@@ -50,10 +50,11 @@ function animateSurface(canvas: HTMLCanvasElement, toggle: HTMLButtonElement) {
   function sync() {
     cancelAnimationFrame(frame);
     lastPaint = 0;
-    canvas.hidden = toggle.hidden = prefersReducedMotion.matches;
-    if (canvas.hidden || !visible || document.hidden) return;
+    canvas.hidden = false;
+    toggle.hidden = prefersReducedMotion.matches;
+    if (!visible || document.hidden) return;
     paint();
-    if (!paused) frame = requestAnimationFrame(tick);
+    if (!paused && !prefersReducedMotion.matches) frame = requestAnimationFrame(tick);
   }
 
   toggle.addEventListener('click', () => {

@@ -1,0 +1,20 @@
+---
+import { projects } from '../data/projects';
+interface Props { project: (typeof projects)[number]; }
+const { project } = Astro.props;
+---
+<figure class="terminal">
+  <figcaption><i aria-hidden="true"></i>{project.area}</figcaption>
+  <div class="flow">{project.flow.map(step => <span>{step}</span>)}</div>
+  <div class="volume"><b>{project.metric}</b> {project.unit}</div>
+</figure>
+<style>
+  .terminal { background:#101017; border:1px solid #474451; border-radius:10px; overflow:hidden; box-shadow:0 15px 35px #0005; color:#e7e5ef; font:500 .8rem/1.5 ui-monospace,monospace; }
+  figcaption { display:flex; align-items:center; gap:28px; padding:10px 14px; border-bottom:1px solid #383641; color:#bdb8c9; background:#1b1a22; }
+  i { width:7px; height:7px; border-radius:50%; background:#ff7268; box-shadow:10px 0 #ffc453,20px 0 #60c786; margin-right:2px; }
+  .flow { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; padding:30px 12px 18px; }
+  .flow span { position:relative; display:grid; place-items:center; min-height:45px; padding:5px; text-align:center; font-size:.75rem; border:1px solid #504b60; background:#201e29; border-radius:5px; }
+  .flow span:nth-child(2) { border-color:var(--accent,#ba9cf6); }
+  .flow span + span::before { content:'→'; position:absolute; right:100%; width:13px; color:var(--accent,#ba9cf6); }
+  .volume { margin:0 14px 18px; color:#aaa5b7; }.volume b { color:var(--accent,#ba9cf6); }
+</style>

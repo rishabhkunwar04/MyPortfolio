@@ -1,12 +1,12 @@
 ---
 import Site from '../layouts/Site.astro';
+import PortraitIntro from '../components/PortraitIntro.astro';
 import ExpertiseAndTools from '../components/ExpertiseAndTools.astro';
 ---
 <Site title="Rishabh Raj — Software Engineer" description="Rishabh Raj is a senior software engineer working on backend platforms, distributed systems, and event processing at American Express.">
     <main id="main">
       <section class="hero" aria-labelledby="intro">
         <div class="surface" aria-hidden="true">
-          <img src="/routing-globe.webp" width="1440" height="960" alt="" />
           <canvas hidden></canvas>
         </div>
         <div class="intro">
@@ -37,6 +37,7 @@ import ExpertiseAndTools from '../components/ExpertiseAndTools.astro';
             </button>
         </div>
       </section>
+      <PortraitIntro />
       <ExpertiseAndTools />
       <section class="contact" id="contact" aria-labelledby="contact-title">
         <div class="wrap">

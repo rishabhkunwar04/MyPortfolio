@@ -20,7 +20,6 @@
 .story-title .label { margin-bottom: 18px; }
 .story-row { display: grid; grid-template-columns: 1fr 1.8fr; gap: 24px; border-top: 1px solid var(--line); padding: 24px 0; }
 .story-row p { margin: 0; font-size: 1.1rem; }
-nav a[aria-current="page"] { text-decoration: underline; text-decoration-color: var(--orange); text-underline-offset: .45em; }
 @media (max-width: 600px) {
   .story-row { grid-template-columns: 1fr; gap: 8px; }
 }

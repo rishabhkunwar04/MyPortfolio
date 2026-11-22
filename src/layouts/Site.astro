@@ -8,7 +8,11 @@ interface Props {
   description: string;
 }
 const { title, description } = Astro.props;
-const onHome = Astro.url.pathname === '/';
+const path = Astro.url.pathname;
+const links = [
+  ['Home', '/'], ['Work', '/work/'], ['Experience', '/experience/'],
+  ['Blog', '/blog/'], ['Contact', '/#contact'],
+];
 ---
 <!doctype html>
 <html lang="en">
@@ -20,13 +24,60 @@ const onHome = Astro.url.pathname === '/';
   </head>
   <body id="top">
     <a class="skip" href="#main">Skip to content</a>
-    <header class:list={['mast', { 'mast-dark': onHome }]}><div class="wrap nav">
-      <a class="brand" href={onHome ? '#top' : '/'} aria-label="Rishabh Raj, home"><span class="mark" aria-hidden="true">rr.</span> Rishabh Raj</a>
-      <nav aria-label="Main navigation">
-        <a href="/work/" aria-current={Astro.url.pathname.replace(/\/$/, '') === '/work' ? 'page' : undefined}>Work</a>
-        <a href={onHome ? '#contact' : '/#contact'}>Contact</a>
-      </nav>
-    </div></header>
+    <header class="mast">
+      <span class="reading-progress" aria-hidden="true"></span>
+      <div class="wrap bar">
+        <a class="wordmark" href="/" aria-label="Rishabh Raj, home">RishabhRaj.</a>
+        <nav aria-label="Main navigation">
+          {links.map(([label, href]) => <a href={href} aria-current={path === href ? 'page' : href === '/work/' && path.startsWith('/work/') ? 'location' : undefined}>{label}</a>)}
+        </nav>
+        <div class="actions">
+          <a href="/rishabh-raj-resume.pdf" download aria-label="Download résumé">./resume ↓</a>
+          <a class="hire" href="mailto:rishabh.kunwar04@gmail.com" aria-label="Email Rishabh about hiring">&gt; hire_me</a>
+        </div>
+      </div>
+    </header>
     <slot />
+    <script>
+      const progress = document.querySelector<HTMLElement>('.reading-progress')!;
+      const header = document.querySelector<HTMLElement>('.mast')!;
+      const contact = document.querySelector('#contact');
+      const homeLink = header.querySelector('nav a[href="/"]')!;
+      const contactLink = header.querySelector('nav a[href="/#contact"]')!;
+      function updateBar() {
+        const distance = document.documentElement.scrollHeight - window.innerHeight;
+        const fraction = distance > 0 ? Math.min(1, Math.max(0, window.scrollY / distance)) : 0;
+        progress.style.transform = 'scaleX(' + fraction + ')';
+        if (contact && location.pathname === '/') {
+          const atContact = contact.getBoundingClientRect().top < window.innerHeight * .5 || fraction >= .999;
+          homeLink.toggleAttribute('aria-current', !atContact);
+          contactLink.toggleAttribute('aria-current', atContact);
+          (atContact ? contactLink : homeLink).setAttribute('aria-current', atContact ? 'location' : 'page');
+        }
+      }
+      window.addEventListener('scroll', updateBar, { passive: true });
+      window.addEventListener('resize', updateBar);
+      window.addEventListener('pageshow', updateBar);
+      updateBar();
+    </script>
   </body>
 </html>
+<style>
+  .mast { position:sticky; top:0; z-index:20; color:#f5f4f8; background:#111116f5; backdrop-filter:blur(14px); border-bottom:1px solid #302e39; }
+  .reading-progress { position:absolute; inset:0 0 auto; height:3px; background:linear-gradient(90deg,#9657f5,#fd81c3); transform:scaleX(0); transform-origin:left; }
+  .bar,nav,.actions { display:flex; align-items:center; gap:.35rem; }
+  .bar { min-height:66px; gap:1.2rem; }
+  .wordmark { margin-right:auto; color:white; font:650 1.1rem ui-monospace,monospace; letter-spacing:-.045em; }
+  .mast a { text-decoration:none; white-space:nowrap; }
+  nav a,.actions a { border:1px solid transparent; border-radius:999px; padding:9px 14px; font-size:.95rem; color:#c0bdcb; }
+  nav a:hover,nav a[aria-current] { color:white; background:#262035; border-color:#7051a7; }
+  .actions a { border-color:#403c49; font:.85rem/1.5 ui-monospace,monospace; }
+  .actions .hire { background:#142721; color:#62dfab; border-color:#357b63; }
+  .actions a:hover { color:white; border-color:currentColor; }
+  @media(max-width:880px){
+    .bar { flex-wrap:wrap; justify-content:space-between; gap:4px 8px; padding-block:9px 5px; }
+    nav { order:3; width:100%; justify-content:center; gap:0; }
+    nav a { padding:7px min(2vw,14px); font-size:.86rem; }
+    .actions a { padding:6px 9px; font-size:.76rem; }
+  }
+</style>

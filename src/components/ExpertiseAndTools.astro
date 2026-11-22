@@ -12,6 +12,7 @@ const expertise = [
   },
   {
     title: 'AI agents & skills',
+    id: 'ai-skills',
     copy: 'I build AI agents and reusable skills for recurring engineering tasks. One tool I developed finds security issues in code and opens pull requests with proposed fixes.',
     accent: '#eab3bc',
   },
@@ -39,7 +40,7 @@ const rows = [
     <h2 id="expertise-title">My expertise<span>.</span></h2>
     <div class="expertise-grid">
       {expertise.map((item,i) => (
-        <article class="skill" style={`--accent:${item.accent};--delay:${i % 2 * 75}ms`}>
+        <article id={item.id} class="skill" style={`--accent:${item.accent};--delay:${i % 2 * 75}ms`}>
           <h3>{item.title}</h3>
           <p>{item.copy}</p>
         </article>

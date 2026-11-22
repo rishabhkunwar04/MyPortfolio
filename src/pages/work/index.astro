@@ -1,23 +1,69 @@
 ---
 import Site from '../../layouts/Site.astro';
+import SystemPreview from '../../components/SystemPreview.astro';
 import { projects } from '../../data/projects';
-import '../../work.css';
+const featured = projects[0];
+const companies = [...new Set(projects.map(project => project.company))];
 ---
-<Site title="Work — Rishabh Raj" description="Selected engineering projects by Rishabh Raj at American Express and Airtel.">
-  <main id="main" class="wrap work-page">
-    <header class="work-heading intro">
-      <h1>Selected work<span>.</span></h1>
-      <p class="bio">Backend systems I’ve worked on at American Express and Airtel, from routing reward events to finding similar customer records.</p>
+<Site title="My Work — Rishabh Raj" description="Production systems for rewards, address matching, and telecom analytics at American Express and Airtel.">
+  <main id="main"><div class="wrap">
+    <header class="lead">
+      <h1>My<br/>Work</h1>
+      <div class="intro-copy">
+        <p>At American Express, I route reward events across 22 markets. At Airtel, I built systems to match customer addresses and process data across four telecom services.</p>
+        <div class="feature"><small>Featured system</small><h2>{featured.title}</h2><a class="cta" href={'/work/'+featured.slug+'/'}>View system →</a></div>
+      </div>
+      <div class="screen"><SystemPreview project={featured}/></div>
     </header>
-    <div class="project-cards">
-      {projects.map(project => (
-        <article class="work-card">
-          <a href={`/work/${project.slug}/`}>
-            <div class="metric-panel"><span>{project.area}</span><strong>{project.metric}</strong><span>{project.unit}</span></div>
-            <div class="card-copy"><p class="company">{project.company}</p><h2>{project.title}</h2><p>{project.summary}</p></div>
-          </a>
-        </article>
-      ))}
-    </div>
-  </main>
+    <section aria-label="Project gallery">
+      <div class="filters" hidden role="group" aria-label="Filter projects by employer"><span>Filter by</span>{['All', ...companies].map(company => <button type="button" data-filter={company} aria-pressed={company==='All'}>{company}</button>)}</div>
+      <div class="gallery">{projects.map(project => <article data-company={project.company}><a href={'/work/'+project.slug+'/'}>
+        <div class="art"><SystemPreview project={project}/></div>
+        <h2>{project.title}</h2><p>{project.company} · {project.area}</p><span class="read">Show system →</span>
+      </a></article>)}</div>
+    </section>
+    <aside><h2>Building a backend, distributed systems, or AI engineering team?</h2><a class="cta" href="https://www.linkedin.com/in/rishabh-raj-1551811ab/">Get in touch on LinkedIn ↗</a></aside>
+  </div></main>
+  <footer><div class="wrap">© {new Date().getFullYear()} Rishabh Raj <a href="#top">Back to top ↑</a></div></footer>
 </Site>
+<script>
+  const filters = document.querySelector<HTMLElement>('.filters');
+  if (filters) filters.hidden = false;
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  buttons.forEach(button => button.addEventListener('click', () => {
+    buttons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+    document.querySelectorAll<HTMLElement>('[data-company]').forEach(card => {
+      card.hidden = button.dataset.filter !== 'All' && card.dataset.company !== button.dataset.filter;
+    });
+  }));
+</script>
+<style>
+  main,footer { background:#101014; color:#f5f4f8; }
+  main { padding:clamp(40px,6vw,88px) 0; }
+  .lead { display:grid; grid-template-columns:1fr 1fr; gap:38px 7%; align-items:center; }
+  h1 { font-size:clamp(4rem,7.4vw,7rem); line-height:.92; margin:0; }
+  .intro-copy p,.filters,.cta,.read,article p { font-family:ui-monospace,monospace; }
+  .intro-copy p { max-width:55ch; color:#c3bfce; line-height:1.8; }
+  .feature { margin:32px 0 0 8%; padding-left:20px; border-left:2px solid #a78ae4; }
+  .feature small { font-weight:650; }.feature h2 { margin:8px 0 18px; font-size:1.5rem; }
+  .cta { display:inline-block; padding:12px 19px; border-radius:7px; background:#7043d2; color:white; text-decoration:none; font-size:.9rem; }
+  .cta:hover { background:#8250e9; }
+  .screen { padding:12px 12px 19px; background:linear-gradient(#302e39,#25232e 94%,#35313e); border-radius:15px 15px 6px 6px; transform:rotate(-1deg); box-shadow:0 22px 45px #0005; }
+  section,aside { margin-top:clamp(52px,7vw,94px); }
+  .filters { display:flex; align-items:center; flex-wrap:wrap; gap:12px 20px; margin-bottom:26px; color:#b6b1c3; font-size:.9rem; }.filters[hidden]{display:none}
+  button { font:inherit; color:inherit; background:none; border:0; border-bottom:2px solid transparent; padding:8px 0; cursor:pointer; }
+  button[aria-pressed=true]{color:white;border-color:#af91ff}
+  .gallery { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr)); gap:28px; }
+  article a { display:block; text-decoration:none; }
+  .art { --accent:#e9b165; aspect-ratio:1.45; display:grid; align-content:end; padding:20px 5% 0; overflow:hidden; background:radial-gradient(at top left,#513822,#16151c 75%); border:1px solid #34313c; border-radius:12px; }
+  article:nth-child(2) .art { --accent:#9cbff8; background:radial-gradient(at top,#2d405c,#16151c 75%); }
+  article:nth-child(3) .art { --accent:#7edac4; background:radial-gradient(at left,#23473f,#16151c 75%); }
+  article h2 { font-size:1.45rem; margin:16px 0 8px; }.read { display:inline-block; border-bottom:1px solid #514664; padding:10px 0 3px; color:#d1c9e0; font-size:.85rem; }
+  article p { color:#b79bef; font-size:.82rem; }
+  aside,footer .wrap { display:flex; align-items:center; justify-content:space-between; gap:20px; }
+  aside { padding:clamp(24px,4vw,60px); border:1px solid #383240; border-radius:18px; background:radial-gradient(ellipse at top right,#34214f,transparent 54%),#0d0c12; }
+  aside h2 { max-width:27ch; font-size:clamp(1.5rem,3vw,2.4rem); line-height:1.15; }
+  footer { padding:24px 0; border-top:1px solid #383441; color:#beb8c9; }
+  @media(prefers-reduced-motion:no-preference){article .art{transition:transform .2s}article a:is(:hover,:focus-visible) .art{transform:translateY(-4px)}}
+  @media(max-width:700px){.lead{grid-template-columns:1fr;gap:26px}.feature{margin-left:0}aside{align-items:flex-start;flex-direction:column}}
+</style>
